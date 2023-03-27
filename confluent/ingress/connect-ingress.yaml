@@ -1,0 +1,26 @@
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: connect-ingress
+  namespace: confluent
+  annotations: 
+    nginx.ingress.kubernetes.io/backend-protocol: HTTPS 
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec: 
+  ingressClassName: nginx 
+  tls:
+    - hosts:
+        - connect.<LOADBALANCER_INGRESS>.sslip.io 
+  rules:
+    - host: connect.<LOADBALANCER_INGRESS>.sslip.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: connect
+                port: 
+                  number: 8083
+    

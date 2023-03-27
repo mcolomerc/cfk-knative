@@ -1,0 +1,24 @@
+apiVersion: platform.confluent.io/v1beta1
+kind: Connector
+metadata:
+  name: pageviewssr
+  namespace: confluent
+spec:
+  class: "io.confluent.kafka.connect.datagen.DatagenConnector"
+  taskMax: 2
+  connectClusterRef:
+    name: connect
+  configs:
+    kafka.topic: "pageviews.with.schema" 
+    key.converter: "org.apache.kafka.connect.storage.StringConverter"
+    value.converter: "io.confluent.connect.avro.AvroConverter" 
+    value.converter.schemas.enable: "true"
+    value.converter.schema.registry.url: https://schemaregistry.confluent.svc.cluster.local:8081 
+    value.converter.schema.registry.ssl.truststore.location: "/mnt/sslcerts/truststore.jks"
+    value.converter.schema.registry.ssl.truststore.password: "${file:/mnt/sslcerts/jksPassword.txt:jksPassword}"
+    value.converter.schema.registry.ssl.keystore.location: "/mnt/sslcerts/keystore.jks"
+    value.converter.schema.registry.ssl.keystore.password: "${file:/mnt/sslcerts/jksPassword.txt:jksPassword}"
+    max.interval: "100"
+    iterations: "100000"
+    schema.string: "{\"type\": \"record\", \"namespace\": \"datagen\", \"name\": \"pageviews\", \"fields\": [{\"type\": {\"type\": \"long\", \"format_as_time\": \"unix_long\", \"arg.properties\": {\"iteration\": {\"start\": 1, \"step\": 10}}}, \"name\": \"viewtime\"}, {\"type\": {\"type\": \"string\", \"arg.properties\": {\"regex\": \"User_[1-9]{0,1}\"}}, \"name\": \"userid\"}, {\"type\": {\"type\": \"string\", \"arg.properties\": {\"regex\": \"Page_[1-9][0-9]?\"}}, \"name\": \"pageid\"}]}"
+    schema.keyfield: "pageid"

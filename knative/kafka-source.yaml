@@ -1,0 +1,49 @@
+apiVersion: sources.knative.dev/v1beta1
+kind: KafkaSource
+metadata:
+  name: kafka-source
+  namespace: confluent
+spec:
+  net:
+    tls:
+      enable: true
+      cert:
+        secretKeyRef:
+         key: tls.crt
+         name: kafka-generated-jks
+      key:
+        secretKeyRef:
+         key: tls.key
+         name: kafka-generated-jks
+      caCert:
+        secretKeyRef:
+         key: ca.crt
+         name: kafka-generated-jks
+    sasl:
+      enable: true
+      user:
+        secretKeyRef:
+          name: kafka-source-secret
+          key: user
+      password:
+        secretKeyRef:
+          name: kafka-source-secret
+          key: password
+      type:
+        secretKeyRef:
+          name: kafka-source-secret
+          key: saslType
+  consumerGroup: knative-group
+  bootstrapServers:
+    - kafka.confluent.svc.cluster.local:9071 # note the kafka namespace
+  consumers: 12
+  topics:
+    - pageviews
+    - pageviews.with.schema
+  sink:
+    ref:
+      apiVersion: serving.knative.dev/v1
+      kind: Service
+      name: event-display
+      namaspace: event-consumers
+     

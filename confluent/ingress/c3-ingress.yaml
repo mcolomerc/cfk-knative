@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: c3-ingress
+  namespace: confluent
+  annotations: 
+    nginx.ingress.kubernetes.io/backend-protocol: HTTPS 
+    nginx.ingress.kubernetes.io/ssl-redirect: "false"
+spec: 
+  ingressClassName: nginx 
+  tls:
+    - hosts:
+        - controlcenter.<LOADBALANCER_INGRESS>.sslip.io 
+  rules:
+    - host: controlcenter.<LOADBALANCER_INGRESS>.sslip.io
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: controlcenter-0-internal
+                port: 
+                  number: 9021
+    
