@@ -1,4 +1,4 @@
-gcloud beta container --project "solutionsarchitect-01" clusters create "mcolomer-gke-1" \
+gcloud beta container --project "<PROJECT>" clusters create "<CLUSTER_NAME>" \
 --zone "europe-west1-c" \
 --no-enable-basic-auth \ 
 --cluster-version "1.24.9-gke.3200" \
