@@ -1,5 +1,10 @@
 # Confluent For Kubernetes and Knative
 
+Requires: 
+ - OpenSSL
+ - Helm 
+ - Kubectl
+ 
 ## Confluent For Kubernetes
 
 - Install Confluent Platform. Script: `./confluent/deploy.sh`
