@@ -1,5 +1,5 @@
-gcloud beta container --project "solutionsarchitect-01" clusters create "mcolomer-gke-1" \
---zone "europe-west1-c" \
+gcloud beta container --project "<PROJECT>" clusters create "<CLUSTERNAME>" \
+--zone "<ZONE>" \
 --no-enable-basic-auth \ 
 --cluster-version "1.24.9-gke.3200" \
 --release-channel "regular" \
@@ -14,8 +14,8 @@ gcloud beta container --project "solutionsarchitect-01" clusters create "mcolome
 --logging=SYSTEM,WORKLOAD \
 --monitoring=SYSTEM \
 --enable-ip-alias \
---network "projects/solutionsarchitect-01/global/networks/mcolomer-vpc" \
---subnetwork "projects/solutionsarchitect-01/regions/europe-west1/subnetworks/mcolomer-subnet" \ 
+--network "projects/<PROJECT>/global/networks/<NETWORK>" \
+--subnetwork "projects/<PROJECT>/regions/<REGION>/subnetworks/<SUBNET>" \ 
 --no-enable-intra-node-visibility --default-max-pods-per-node "110" --no-enable-master-authorized-networks \
 --addons HorizontalPodAutoscaling,HttpLoadBalancing,GcePersistentDiskCsiDriver \
 --enable-autoupgrade \
@@ -23,6 +23,6 @@ gcloud beta container --project "solutionsarchitect-01" clusters create "mcolome
 --max-surge-upgrade 1 \
 --max-unavailable-upgrade 0 \
 --enable-shielded-nodes \ 
---node-locations "europe-west1-c" \
+--node-locations "<ZONE>" \
 --logging=SYSTEM,WORKLOAD \
 --monitoring=SYSTEM  
