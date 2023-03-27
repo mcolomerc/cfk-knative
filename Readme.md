@@ -49,4 +49,4 @@ Deploy script will execute (`./knative/deploy.sh`):
 
 Event Consumer Logs:
 
-`kubectl logs --selector='serving.knative.dev/service=event-display' -c user-container -n event-consumers`
+`kubectl logs --selector='serving.knative.dev/service=event-display' -c user-container -n confluent`

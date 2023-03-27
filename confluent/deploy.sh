@@ -105,4 +105,12 @@ sed -i'' .template "s/<LOADBALANCER_INGRESS>/$ip/g" ${PWD}/confluent/ingress/con
 kubectl wait -l statefulset.kubernetes.io/pod-name=controlcenter-0 --for=condition=ready pod --timeout=-1s -n confluent 
 
 kubectl apply -f ${PWD}/confluent/ingress/c3-ingress.yaml
-kubectl apply -f ${PWD}/confluent/ingress/connect-ingress.yaml 
+kubectl apply -f ${PWD}/confluent/ingress/connect-ingress.yaml  
+
+kubectl -n confluent create secret generic kafka-source-secret \
+--from-file=ca.crt=${PWD}/confluent/platform/ca.pem \
+--from-literal=password="kafka_client-secret" \
+--from-literal=saslType="PLAIN" \
+--from-literal=user="kafka_client"
+ 
+open https://controlcenter.$ip.sslip.io/
